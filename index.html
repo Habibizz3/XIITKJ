@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Kelas XII TKJ</title>
+    <title>Website Kelas XII TKJ - SMUBA</title>
     <!-- Font Google -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Ikon FontAwesome untuk Sosmed -->
+    <!-- Ikon FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
@@ -25,6 +25,17 @@
             --text-light: #f1f5f9;
             --text-dark: #334155;
             --bg-light: #f8fafc;
+            --bg-dark: #0f172a;
+            --card-bg: #ffffff;
+            --card-bg-dark: #1e293b;
+        }
+
+        /* Dark Mode Variables */
+        body.dark-mode {
+            --bg-light: #0f172a;
+            --text-dark: #f1f5f9;
+            --card-bg: #1e293b;
+            --card-bg-dark: #0f172a;
         }
 
         html {
@@ -35,6 +46,46 @@
             background-color: var(--bg-light);
             color: var(--text-dark);
             line-height: 1.6;
+            transition: background-color 0.3s ease;
+        }
+
+        /* --- LOADING SCREEN --- */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--primary-color);
+            border-top: 5px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* --- NAVIGATION BAR --- */
@@ -61,10 +112,29 @@
             color: var(--accent-color);
         }
 
+        /* Tombol Hamburger (Mobile) */
+        .menu-toggle {
+            display: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
         nav ul {
             list-style: none;
             display: flex;
             gap: 20px;
+            align-items: center;
         }
 
         nav a {
@@ -72,10 +142,22 @@
             text-decoration: none;
             font-weight: 500;
             transition: 0.3s;
+            position: relative;
         }
 
-        nav a:hover {
-            color: var(--accent-color);
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
         }
 
         /* --- HERO SECTION DENGAN SLIDER BACKGROUND --- */
@@ -92,7 +174,6 @@
             overflow: hidden;
         }
 
-        /* Container Background Slider */
         .hero-bg {
             position: absolute;
             top: 0;
@@ -105,7 +186,6 @@
             transition: background-image 1s ease-in-out;
         }
 
-        /* Overlay Gelap agar tulisan terbaca */
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -113,11 +193,9 @@
             width: 100%;
             height: 100%;
             background: rgba(15, 23, 42, 0.7);
-            /* Warna gelap transparan */
             z-index: 0;
         }
 
-        /* Konten Teks di atas Background */
         .hero-content {
             position: relative;
             z-index: 1;
@@ -126,15 +204,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero h1 {
@@ -158,12 +229,36 @@
             font-weight: 600;
             transition: 0.3s;
             display: inline-block;
+            border: none;
+            cursor: pointer;
         }
 
         .btn:hover {
             background-color: #0891b2;
             transform: scale(1.05);
             box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        /* --- SEARCH BAR --- */
+        .search-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .search-input {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid var(--primary-color);
+            background: var(--card-bg);
+            color: var(--text-dark);
+            width: 300px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--accent-color);
         }
 
         /* --- GENERAL SECTION STYLES --- */
@@ -198,7 +293,7 @@
         }
 
         .card {
-            background: white;
+            background: var(--card-bg);
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -210,6 +305,7 @@
 
         .card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
         .card img {
@@ -239,7 +335,7 @@
         }
 
         .member-item {
-            background: rgb(226, 244, 250);
+            background: var(--card-bg);
             padding: 15px;
             border-radius: 10px;
             text-align: center;
@@ -250,6 +346,7 @@
         .member-item:hover {
             background-color: var(--primary-color);
             color: white;
+            transform: scale(1.05);
         }
 
         .member-item h4 {
@@ -259,7 +356,7 @@
         /* --- JADWAL PIKET (TABLE) --- */
         .table-container {
             overflow-x: auto;
-            background: rgb(187, 226, 250);
+            background: var(--card-bg);
             border-radius: 20px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
@@ -270,8 +367,7 @@
             min-width: 400px;
         }
 
-        th,
-        td {
+        th, td {
             padding: 15px;
             text-align: center;
             border-bottom: 1px solid #e2e8f0;
@@ -279,7 +375,7 @@
 
         th {
             background-color: var(--primary-color);
-            color: rgb(249, 248, 248);
+            color: var(--text-light);
         }
 
         tr:hover {
@@ -294,7 +390,7 @@
         }
 
         .learning-item {
-            background: white;
+            background: var(--card-bg);
             margin-bottom: 15px;
             padding: 20px;
             border-radius: 10px;
@@ -314,7 +410,32 @@
             margin-bottom: 5px;
         }
 
-        /* --- MEDIA SOSIAL (BARU) --- */
+        /* --- GALLERY SECTION --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        /* --- MEDIA SOSIAL --- */
         .social-section {
             background-color: var(--primary-color);
             padding: 15px 5%;
@@ -338,13 +459,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 30px;
-            height: 30px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             color: white;
             text-decoration: none;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             transition: 0.3s;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -353,6 +474,43 @@
             background: var(--accent-color);
             transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- CONTACT SECTION --- */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
         }
 
         /* --- FOOTER --- */
@@ -364,18 +522,82 @@
             font-size: 0.9rem;
         }
 
+        /* --- BACK TO TOP BUTTON --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            z-index: 999;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            background: var(--primary-color);
+        }
+
+        /* --- ANIMASI SCROLL REVEAL --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* --- RESPONSIVE MOBILE --- */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
             }
 
+            .menu-toggle {
+                display: block;
+            }
+
             nav ul {
                 display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary-color);
+                padding: 10px 0;
+                text-align: center;
+            }
+
+            nav ul.active {
+                display: flex;
             }
 
             .logo {
                 font-size: 1.2rem;
+            }
+
+            .search-input {
+                width: 100%;
             }
         }
     </style>
@@ -383,24 +605,38 @@
 
 <body>
 
+    <!-- LOADING SCREEN -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <h2>Memuat Website...</h2>
+        </div>
+    </div>
+
     <!-- NAVIGASI -->
     <nav>
         <div class="logo">XII <span>TKJ</span></div>
-        <ul>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul id="nav-list">
             <li><a href="#home">Home</a></li>
             <li><a href="#struktur">Struktur</a></li>
             <li><a href="#anggota">Anggota</a></li>
             <li><a href="#piket">Piket</a></li>
             <li><a href="#pembelajaran">Materi</a></li>
+            <li><a href="#gallery">Galeri</a></li>
+            <li><a href="#contact">Kontak</a></li>
+            <li><button class="dark-mode-toggle" id="dark-mode-btn">
+                <i class="fas fa-moon"></i>
+            </button></li>
         </ul>
     </nav>
 
-    <!-- HERO SECTION DENGAN SLIDER BACKGROUND -->
+    <!-- HERO SECTION -->
     <section id="home" class="hero">
-        <!-- Background Slider (Gambar akan diganti otomatis oleh JS) -->
         <div class="hero-bg" id="heroBg"></div>
         <div class="hero-overlay"></div>
-
         <div class="hero-content">
             <h1>Selamat Datang di Web Kelas XII TKJ</h1>
             <p>Website resmi kelas XII TKJ SMUBA. Tempat berbagi informasi, jadwal, dan materi pembelajaran.</p>
@@ -409,7 +645,7 @@
     </section>
 
     <!-- STRUKTUR ORGANISASI -->
-    <section id="struktur">
+    <section id="struktur" class="reveal">
         <h2 class="section-title">Struktur Organisasi</h2>
         <div class="org-container">
             <div class="card">
@@ -441,9 +677,15 @@
     </section>
 
     <!-- ANGGOTA KELAS -->
-    <section id="anggota" style="background-color: #e2e8f0;">
+    <section id="anggota" style="background-color: #e2e8f0;" class="reveal">
         <h2 class="section-title">Anggota Kelas</h2>
-        <div class="members-grid">
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" class="search-input" id="search-member" placeholder="Cari nama anggota...">
+        </div>
+
+        <div class="members-grid" id="members-grid">
             <div class="member-item">
                 <h4>1. AHmad Maulana Habibi</h4>
                 <p>Anggota</p>
@@ -528,7 +770,7 @@
     </section>
 
     <!-- JADWAL PIKET -->
-    <section id="piket">
+    <section id="piket" class="reveal">
         <h2 class="section-title">Jadwal Piket</h2>
         <div class="table-container">
             <table>
@@ -569,7 +811,7 @@
     </section>
 
     <!-- PEMBELAJARAN -->
-    <section id="pembelajaran" style="background-color: #f8fafc;">
+    <section id="pembelajaran" style="background-color: #f8fafc;" class="reveal">
         <h2 class="section-title">Jadwal Pembelajaran</h2>
         <ul class="learning-list">
             <li class="learning-item">
@@ -599,18 +841,60 @@
         </ul>
     </section>
 
+    <!-- GALERI FOTO -->
+    <section id="gallery" class="reveal">
+        <h2 class="section-title">Galeri Kelas</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Foto 1">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Foto 2">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Foto 3">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Foto 4">
+            </div>
+        </div>
+    </section>
+
     <!-- MEDIA SOSIAL -->
-    <section id="sosmed" class="social-section">
+    <section id="sosmed" class="social-section reveal">
         <h2>Our media social</h2>
         <div class="social-icons">
-            <!-- Ganti href dengan link media sosial kelas -->
-            </a>
             <a href="https://instagram.com" target="_blank" class="social-btn" title="Instagram">
                 <i class="fab fa-instagram"></i>
             </a>
             <a href="https://TikTok.com" target="_blank" class="social-btn" title="TikTok">
                 <i class="fab fa-tiktok"></i>
             </a>
+            <a href="https://youtube.com" target="_blank" class="social-btn" title="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- KONTAK -->
+    <section id="contact" class="reveal">
+        <h2 class="section-title">Hubungi Kami</h2>
+        <div class="contact-form">
+            <form>
+                <div class="form-group">
+                    <label>Nama</label>
+                    <input type="text" placeholder="Masukkan nama Anda">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="Masukkan email Anda">
+                </div>
+                <div class="form-group">
+                    <label>Pesan</label>
+                    <textarea rows="5" placeholder="Tulis pesan Anda"></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Kirim Pesan</button>
+            </form>
         </div>
     </section>
 
@@ -619,9 +903,22 @@
         <p>&copy; 2023 Kelas XII TKJ. Dibuat dengan ❤️ dan ☕.</p>
     </footer>
 
-    <!-- JAVASCRIPT UNTUK BACKGROUND SLIDER -->
+    <!-- BACK TO TOP BUTTON -->
+    <a href="#home" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- JAVASCRIPT -->
     <script>
-        // Daftar foto background (Ganti URL dengan foto kelas kalian)
+        // 1. Loading Screen
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 1000);
+        });
+
+        // 2. Background Slider
         const backgroundImages = [
             'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
             'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
@@ -632,19 +929,93 @@
         let currentIndex = 0;
         const heroBg = document.getElementById('heroBg');
 
-        // Fungsi untuk mengganti background
         function changeBackground() {
             heroBg.style.backgroundImage = `url('${backgroundImages[currentIndex]}')`;
             currentIndex = (currentIndex + 1) % backgroundImages.length;
         }
 
-        // Ganti background setiap 5 detik
-        setInterval(changeBackground, 1500);
-
-        // Set background pertama kali
+        setInterval(changeBackground, 5000);
         changeBackground();
+
+        // 3. Mobile Menu Toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+
+        menuToggle.addEventListener('click', () => {
+            navList.classList.toggle('active');
+        });
+
+        // 4. Dark Mode Toggle
+        const darkModeBtn = document.getElementById('dark-mode-btn');
+        const body = document.body;
+
+        darkModeBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const icon = darkModeBtn.querySelector('i');
+            if (body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+
+        // 5. Search Member
+        const searchInput = document.getElementById('search-member');
+        const membersGrid = document.getElementById('members-grid');
+        const memberItems = membersGrid.querySelectorAll('.member-item');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            memberItems.forEach(item => {
+                const name = item.querySelector('h4').textContent.toLowerCase();
+                if (name.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // 6. Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 150;
+
+            revealElements.forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Check on load
+
+        // 7. Back to Top Button
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        // 8. Form Submit (Demo)
+        const contactForm = document.querySelector('form');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Terima kasih! Pesan Anda telah terkirim.');
+            contactForm.reset();
+        });
     </script>
 
 </body>
-
 </html>
